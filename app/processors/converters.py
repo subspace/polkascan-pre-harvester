@@ -249,6 +249,7 @@ class PolkascanHarvesterService(BaseService):
                     count_constants=0,
                     count_errors=0
                 )
+               
 
                 runtime.save(self.db_session)
 
@@ -411,9 +412,17 @@ class PolkascanHarvesterService(BaseService):
                                 module_id=module_id,
                                 index=idx,
                                 name=constant.name,
-                                type=constant.type,
-                                value=value
+                                # TODO: any better way, made this becouse in the case of a tuple value mysql fails to save as those fields are strings.
+                                type="".join(constant.type),
+                                value="".join(constant.value),
                             )
+                            print('--------------------runtime_constant------------------------------')
+                            print("runtime_constant.spec_version", runtime_constant.spec_version)
+                            print("runtime_constant.module_id", runtime_constant.module_id)
+                            print("runtime_constant.name", runtime_constant.name)
+                            print("runtime_constant.type", runtime_constant.type)
+                            print("runtime_constant.value", runtime_constant.value)
+                    
                             runtime_constant.save(self.db_session)
 
                     if len(module.errors or []) > 0:
