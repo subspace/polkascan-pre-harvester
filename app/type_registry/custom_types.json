@@ -1,30 +1,55 @@
 {
   "runtime_id": 100,
   "types": {
-    "MyCustomType": "u64",
-    "CustomKeyStruct": {
+    "SlotProbability": "(u64, u64)",
+    "Randomness": "[u8; 32]",
+    "NextEpochDescriptor": {
       "type": "struct",
+      "type_mapping": [["randomness", "Randomness"]]
+    },
+    "NextConfigDescriptorV1": {
+      "type": "struct",
+      "type_mapping": [["c", "(u64, u64)"]]
+    },
+    "NextConfigDescriptor": {
+      "type": "enum",
       "type_mapping": [
-         ["grandpa", "AccountId"],
-         ["babe", "AccountId"],
-         ["im_online", "AccountId"],
-         ["authority_discovery", "AccountId"],
-         ["parachains", "AccountId"]
+        ["V0", "Null"],
+        ["V1", "NextConfigDescriptorV1"]
       ]
+    },
+    "SolutionRangeDescriptor": {
+      "type": "struct",
+      "type_mapping": [["solutionRange", "u64"]]
+    },
+    "SaltDescriptor": {
+      "type": "struct",
+      "type_mapping": [["salt", "u64"]]
+    },
+    "NextSolutionRangeDescriptor": {
+      "type": "struct",
+      "type_mapping": [["solutionRange", "u64"]]
+    },
+    "NextSaltDescriptor": {
+      "type": "struct",
+      "type_mapping": [["salt", "u64"]]
+    },
+    "ConsensusLog": {
+      "type": "enum",
+      "type_mapping": [
+        ["Phantom", "Null"],
+        ["NextEpochData", "NextEpochDescriptor"],
+        ["NextConfigData", "NextConfigDescriptor"],
+        ["SolutionRangeData", "SolutionRangeDescriptor"],
+        ["SaltData", "SaltDescriptor"],
+        ["NextSolutionRangeData", "NextSolutionRangeDescriptor"],
+        ["NextSaltData", "NextSaltDescriptor"]
+      ]
+    },
+    "PreDigest": {
+      "type": "struct",
+      "type_mapping": [["slot", "u64"]]
     }
   },
-  "versioning": [
-    {
-      "runtime_range": [0, 99],
-      "types": {
-        "MyCustomType": "u32"
-      }
-    },
-    {
-      "runtime_range": [100, null],
-      "types": {
-        "MyCustomType": "u64"
-      }
-    }
-  ]
+  "versioning": []
 }
